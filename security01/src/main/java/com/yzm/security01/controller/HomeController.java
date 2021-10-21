@@ -1,51 +1,63 @@
 package com.yzm.security01.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.yzm.common.entity.HttpResult;
-import com.yzm.security01.entity.User;
-import com.yzm.security01.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-
-    public HomeController(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @GetMapping("auth/login")
-    public String login() {
-        return "login";
-    }
-
-    @GetMapping(value = {"/", "home"})
+    @GetMapping(value = {"/", "/home"})
     public Object home() {
         return "home";
     }
 
-    @GetMapping("401")
-    public Object notRole() {
-        return "401";
-    }
-
-    @PostMapping("register")
+    @GetMapping("/hello")
     @ResponseBody
-    public Object register(@RequestParam String username, @RequestParam String password) {
-        User user = new User();
-        user.setUsername(username);
-        // 密码加密
-        user.setPassword(passwordEncoder.encode(password));
-        userService.save(user);
-        return HttpResult.ok("注册成功");
+    public Object hello() {
+        return "hello";
     }
 
+    // 通过authentication或userDetails获取当前登录用户信息+
+    @GetMapping(value = {"/user", "/admin"})
+    @ResponseBody
+    public String info(Authentication authentication, @AuthenticationPrincipal UserDetails userDetails) {
+        HttpResult result = HttpResult.ok(authentication);
+        System.out.println("authentication ：");
+        System.out.println(JSONObject.toJSONString(result, true));
+        result.setData(userDetails);
+        System.out.println("userDetails ：");
+        System.out.println(JSONObject.toJSONString(result, true));
+        return "请求成功";
+    }
+
+    @GetMapping(value = {"/user/select", "/admin/select"})
+    @ResponseBody
+    public Object select() {
+        return "Select";
+    }
+
+    @GetMapping(value = {"/user/create", "/admin/create"})
+    @ResponseBody
+    public Object create() {
+        return "Create";
+    }
+
+    @GetMapping(value = {"/user/update", "/admin/update"})
+    @ResponseBody
+    public Object update() {
+        return "Update";
+    }
+
+    @GetMapping(value = {"/user/delete", "/admin/delete"})
+    @ResponseBody
+    public Object delete() {
+        return "Delete";
+    }
 }
