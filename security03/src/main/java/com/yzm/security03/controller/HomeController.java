@@ -28,21 +28,6 @@ public class HomeController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("auth/login")
-    public String login() {
-        return "login";
-    }
-
-    @GetMapping(value = {"/", "home"})
-    public Object home() {
-        return "home";
-    }
-
-    @GetMapping("401")
-    public Object notRole() {
-        return "401";
-    }
-
     @PostMapping("register")
     @ResponseBody
     public Object register(@RequestParam String username, @RequestParam String password) {
