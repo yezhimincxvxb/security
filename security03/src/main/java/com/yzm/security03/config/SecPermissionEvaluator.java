@@ -1,7 +1,7 @@
-package com.yzm.security02.config;
+package com.yzm.security03.config;
 
-import com.yzm.security02.entity.Permissions;
-import com.yzm.security02.service.PermissionsService;
+import com.yzm.security03.entity.Permissions;
+import com.yzm.security03.service.PermissionsService;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;

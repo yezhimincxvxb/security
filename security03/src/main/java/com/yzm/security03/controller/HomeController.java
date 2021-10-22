@@ -1,10 +1,10 @@
-package com.yzm.security02.controller;
+package com.yzm.security03.controller;
 
 
 import com.yzm.common.entity.HttpResult;
 import com.yzm.common.utils.HttpUtils;
-import com.yzm.security02.entity.User;
-import com.yzm.security02.service.UserService;
+import com.yzm.security03.entity.User;
+import com.yzm.security03.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,4 +1,4 @@
-package com.yzm.security02.config;
+package com.yzm.security03.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
