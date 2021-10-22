@@ -1,15 +1,18 @@
 package com.yzm.security03.controller;
 
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
+@PreAuthorize("hasAnyRole('ADMIN','USER')")
 public class UserController {
 
     @GetMapping("/select")
+    @PreAuthorize("hasPermission('user','select')")
     public Object select() {
         return "Select";
     }
@@ -25,6 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/delete")
+    @PreAuthorize("hasPermission('user','delete')")
     public Object delete() {
         return "Delete";
     }

@@ -47,7 +47,6 @@ public class SecUserDetailsServiceImpl implements UserDetailsService {
                 .distinct()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        // 这里我们的权限只是基于角色的
         return new SecUserDetails(username, user.getPassword(), authorities, roleIds);
     }
 }

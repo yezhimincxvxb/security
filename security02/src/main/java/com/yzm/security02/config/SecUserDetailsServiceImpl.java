@@ -48,6 +48,6 @@ public class SecUserDetailsServiceImpl implements UserDetailsService {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
         // 这里我们的权限只是基于角色的
-        return new SecUserDetails(username, user.getPassword(), authorities, roleIds);
+        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
     }
 }

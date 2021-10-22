@@ -84,8 +84,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 访问路径URL的授权策略，如注册、登录免登录认证等
                 .authorizeRequests()
                 .antMatchers("/", "/home", "/register", "/auth/login").permitAll() //指定url放行
-                .antMatchers("/user/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER") // 需要角色
-                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // 需要角色
                 .anyRequest().authenticated() //其他任何请求都需要身份认证
                 .and()
         ;

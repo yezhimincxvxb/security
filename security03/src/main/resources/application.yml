@@ -5,10 +5,12 @@ spring:
     username: root
     password: root
 
+  main:
+    allow-bean-definition-overriding: true
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.yzm.security03.entity
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
