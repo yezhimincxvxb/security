@@ -24,6 +24,7 @@
         <module>security03</module>
         <module>security04</module>
         <module>security05</module>
+        <module>security06</module>
     </modules>
 
     <properties>
