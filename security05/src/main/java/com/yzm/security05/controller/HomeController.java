@@ -41,4 +41,10 @@ public class HomeController {
     public void info(HttpServletResponse response, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
         HttpUtils.successWrite(response, userDetails);
     }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello world";
+    }
+
 }

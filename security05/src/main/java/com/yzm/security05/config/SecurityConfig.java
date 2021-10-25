@@ -68,24 +68,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/auth/login") //指定登录页的路径，默认/login
                 .loginProcessingUrl("/login") //指定自定义form表单请求的路径(必须跟login.html中的form action=“url”一致)
-                .defaultSuccessUrl("/home", true) // 登录成功后的跳转url地址
-                .failureUrl("/auth/login?error") // 登录失败后的跳转url地址
+                //.defaultSuccessUrl("/home", true) // 登录成功后的跳转url地址，默认是 "/"
+                //.failureUrl("/auth/login?error") // 登录失败后的跳转url地址，默认是 "/login?error"
+                .successHandler(new SecLoginSuccessHandler())
+                .failureHandler(new SecLoginFailureHandler())
                 .permitAll()
                 .and()
 
+                // 异常处理
                 .exceptionHandling()
-                .accessDeniedPage("/401") // 拒接访问跳转页面
+                .authenticationEntryPoint(new SecAuthenticationEntryPoint()) // 认证失败
+                //.accessDeniedPage("/401") // 拒接访问跳转页面
+                .accessDeniedHandler(new SecAccessDeniedHandler()) // 授权失败
+                .and()
+
+                // 自动登录
+                .rememberMe()
+                .tokenValiditySeconds(120)
+                .authenticationSuccessHandler(new SecAuthenticationSuccessHandler())
                 .and()
 
                 // 退出登录
                 .logout().permitAll()
+                .deleteCookies("JSESSIONID")
+                //.logoutSuccessUrl("/auth/login?logout") // 默认是 "/login?logout"
+                .logoutSuccessHandler(new SecLogoutSuccessHandler())
+                .permitAll()
                 .and()
 
                 // 访问路径URL的授权策略，如注册、登录免登录认证等
                 .authorizeRequests()
                 .antMatchers("/", "/home", "/register", "/auth/login").permitAll() //指定url放行
+                .antMatchers("/hello").rememberMe()
                 .anyRequest().authenticated() //其他任何请求都需要身份认证
-                .and()
         ;
     }
 
