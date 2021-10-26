@@ -8,6 +8,12 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 1234
+    database: 0
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.yzm.security06.entity
@@ -19,4 +25,5 @@ mybatis-plus:
 server:
   servlet:
     session:
-      timeout: 60
+      timeout: 100
+  port: 8090

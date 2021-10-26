@@ -1,25 +1,31 @@
 package com.yzm.security06.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.FlushMode;
+import org.springframework.session.Session;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 @Slf4j
 @Configuration
-@EnableWebSecurity // 开启Security服务
-@EnableGlobalMethodSecurity(prePostEnabled = true) // 开启全局注解
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableRedisHttpSession(redisNamespace = "spring:session:yzm", maxInactiveIntervalInSeconds = 200, flushMode = FlushMode.ON_SAVE)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -50,11 +56,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * session 管理
+     * 会话注册表
      */
+//    @Bean
+//    public SessionRegistry sessionRegistry() {
+//        return new SessionRegistryImpl();
+//    }
+
+    /**
+     * 是spring session为Spring Security提供的,
+     * 用于在集群环境下控制会话并发的会话注册表实现
+     */
+    @Autowired
+    @Lazy
+    private FindByIndexNameSessionRepository<? extends Session> sessionRepository;
+
     @Bean
-    public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
+    public SpringSessionBackedSessionRegistry sessionRegistry(){
+        return new SpringSessionBackedSessionRegistry<>(sessionRepository);
     }
 
     /**
@@ -108,7 +127,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 1.session 超时，默认60秒，即60秒内无操作就会过期
                 // 通过在yml里面设置 server.servlet.session.timeout=60
                 //.invalidSessionUrl("/invalid")
-                //.invalidSessionStrategy(new SecSessionInvalidStrategy())
+                .invalidSessionStrategy(new SecSessionInvalidStrategy())
                 // 2.session 并发控制：控制一个账号同一时刻最多能登录多少个
                 .maximumSessions(1) // 限制最大登陆数
                 // 当达到最大值时，是否阻止用户登录，false表示不阻止，那么新的会覆盖旧的，旧的被迫下载

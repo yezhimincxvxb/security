@@ -7,7 +7,7 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 import java.io.IOException;
 
 /**
- * Session 过期策略
+ * 并发登录导致session失效
  */
 @Slf4j
 public class SecSessionExpiredStrategy implements SessionInformationExpiredStrategy {
@@ -15,8 +15,8 @@ public class SecSessionExpiredStrategy implements SessionInformationExpiredStrat
 
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException {
-        log.info("被迫下线");
-        // 如果是跳转html页面，url代表跳转的地址
+        log.info("session 并发失效");
+        // 跳转html页面
         event.getResponse().sendRedirect(event.getRequest().getContextPath() + "/auth/login?expired");
     }
 

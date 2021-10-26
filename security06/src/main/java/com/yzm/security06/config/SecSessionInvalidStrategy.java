@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Session 无效
+ * 默认session超时失效
  */
 @Slf4j
 public class SecSessionInvalidStrategy implements InvalidSessionStrategy {
@@ -26,7 +26,7 @@ public class SecSessionInvalidStrategy implements InvalidSessionStrategy {
 
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        log.info("Session 过期了");
+        log.info("Session 超时失效");
 
         if (this.createNewSession) {
             request.getSession();
