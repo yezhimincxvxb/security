@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
- * 短信登陆鉴权 Provider
+ * 短信认证 Provider
  */
 public class SmsAuthenticationProvider implements AuthenticationProvider {
     private UserDetailsService userDetailsService;
@@ -33,9 +33,10 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         String mobile = (String) authenticationToken.getPrincipal();
         checkSmsCode(mobile);
 
+        // 相当于DaoAuthenticationProvider的retrieveUser()
         UserDetails userDetails = userDetailsService.loadUserByUsername(mobile);
 
-        // 此时鉴权成功后，应当重新 new 一个拥有鉴权的 authenticationResult 返回
+        // 相当于AbstractUserDetailsAuthenticationProvider的createSuccessAuthentication()
         SmsAuthenticationToken authenticationResult = new SmsAuthenticationToken(userDetails, userDetails.getAuthorities());
         authenticationResult.setDetails(authenticationToken.getDetails());
         return authenticationResult;
