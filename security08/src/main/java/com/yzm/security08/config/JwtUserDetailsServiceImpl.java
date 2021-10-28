@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -21,12 +22,12 @@ import java.util.stream.Collectors;
  * 查询用户信息并封装成认证用户对象的过程是在UserDetailsService接口的实现类（需要用户自己实现）中完成的
  */
 @Service
-public class SecUserDetailsServiceImpl implements UserDetailsService {
+public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     private final UserService userService;
     private final RoleService roleService;
 
-    public SecUserDetailsServiceImpl(UserService userService, RoleService roleService) {
+    public JwtUserDetailsServiceImpl(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -42,11 +43,10 @@ public class SecUserDetailsServiceImpl implements UserDetailsService {
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
         List<Role> roleList = roleService.listByIds(roleIds);
-        List<SimpleGrantedAuthority> authorities = roleList.stream()
+        Set<SimpleGrantedAuthority> authorities = roleList.stream()
                 .map(Role::getRName)
-                .distinct()
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        return new SecUserDetails(username, user.getPassword(), authorities, roleIds);
+                .collect(Collectors.toSet());
+        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
     }
 }
