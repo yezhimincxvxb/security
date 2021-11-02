@@ -1,8 +1,6 @@
 package com.yzm.security07.controller;
 
 
-import com.yzm.common.entity.HttpResult;
-import com.yzm.common.utils.HttpUtils;
 import com.yzm.security07.entity.User;
 import com.yzm.security07.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +8,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,19 +42,32 @@ public class HomeController {
         return "redirect:/auth/login";
     }
 
+    @GetMapping(value = {"/", "/home"})
+    public String home(ModelMap map, @AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails == null ? null : userDetails.getUsername();
+        map.addAttribute("username", username);
+        return "home";
+    }
+
+    @GetMapping("/auth/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("401")
+    public Object notRole() {
+        return "401";
+    }
+
     @PostMapping("register")
-    public Object register(@RequestParam String username, @RequestParam String password) {
+    public Object register(@RequestParam String username, @RequestParam String password, ModelMap map) {
         User user = new User();
         user.setUsername(username);
         // 密码加密
         user.setPassword(passwordEncoder.encode(password));
         userService.save(user);
-        return HttpResult.ok("注册成功");
-    }
-
-    @GetMapping("/info")
-    public void info(HttpServletResponse response, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
-        HttpUtils.successWrite(response, userDetails);
+        map.addAttribute("user", user);
+        return "home";
     }
 
 }
