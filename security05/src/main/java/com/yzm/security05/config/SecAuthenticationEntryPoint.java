@@ -16,6 +16,7 @@ public class SecAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        log.info("需要登录");
         response.sendRedirect(request.getContextPath() + "/auth/login?authentication");
     }
 

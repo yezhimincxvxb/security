@@ -5,12 +5,9 @@
     <title>登录页</title>
 </head>
 <body>
-<h1 th:if="${param.logout}">
-    You have been logged out.
-</h1>
-<h1 th:if="${param.error}">
-    You username or password is wrong
-</h1>
+<h1 th:if="${param.logout}">You have been logged out.</h1>
+<h1 th:if="${param.error}">You username or password is wrong</h1>
+
 <h2>用户名密码登录</h2>
 <form action="/login" method="post">
     <p>
@@ -23,7 +20,7 @@
     </p>
     <p>
         <label>
-            <input type="checkbox" name="remember-me">
+            <input type="checkbox" name="rememberMe">
         </label> Remember me on this computer.
     </p>
     <button type="submit">Sign in</button>

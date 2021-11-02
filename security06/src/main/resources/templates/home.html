@@ -5,7 +5,9 @@
     <title>首页</title>
 </head>
 <body>
-<h2>注册</h2>
+<h1>当前登录状态：<span th:text="${username ?: '未登录 '}"></span></h1>
+
+<h2>1.注册 <span th:if="${user != null}"> [[${user.username}]] 成功</span></h2>
 <form action="/register" method="post">
     <p>
         <label for="username">Username</label>
@@ -18,20 +20,31 @@
     <button type="submit">Register</button>
 </form>
 
-<h2>
-    <a href="/info"> 用户详情 </a>
-</h2>
+<h2>2.注销</h2>
+<form action="/logout" method="post">
+    <button type="submit">Sign out</button>
+</form>
 
-<h3>user</h3>
+<h3>3.User列表</h3>
+<p><a href="/user">User角色</a></p>
 <p><a href="/user/select">User角色,拥有 select 权限</a></p>
 <p><a href="/user/create">User角色,拥有 create 权限</a></p>
 <p><a href="/user/update">User角色,拥有 update 权限</a></p>
 <p><a href="/user/delete">User角色,拥有 delete 权限</a></p>
 
-<h3>admin</h3>
+<h3>4.Admin列表</h3>
+<p><a href="/admin">Admin角色</a></p>
 <p><a href="/admin/select">Admin角色,拥有 select 权限</a></p>
 <p><a href="/admin/create">Admin角色,拥有 create 权限</a></p>
 <p><a href="/admin/update">Admin角色,拥有 update 权限</a></p>
 <p><a href="/admin/delete">Admin角色,拥有 delete 权限</a></p>
+
+<h3>
+    5.测试权限
+    <p><a href="/anonymous">anonymous</a></p>
+    <p><a href="/authenticated">authenticated</a></p>
+    <p><a href="/rememberMe">rememberMe</a></p>
+    <p><a href="/fullyAuthenticated">fullyAuthenticated</a></p>
+</h3>
 </body>
 </html>

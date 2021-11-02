@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 //.rememberMeParameter("rememberMe") // 默认 remember-me
                 //.rememberMeCookieName("rememberMe") // 默认 remember-me
-                .tokenValiditySeconds(120) // 有效时间，单位秒，默认30分钟
+                .tokenValiditySeconds(100) // 有效时间，单位秒，默认30分钟
                 .tokenRepository(tokenRepository())
                 .userDetailsService(userDetailsService)
                 .and()

@@ -84,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 自动登录
                 .rememberMe()
-                .tokenValiditySeconds(120)
+                .tokenValiditySeconds(100)
                 .authenticationSuccessHandler(new SecAuthenticationSuccessHandler())
                 .and()
 
