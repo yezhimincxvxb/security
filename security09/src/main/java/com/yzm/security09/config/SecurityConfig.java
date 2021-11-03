@@ -2,6 +2,7 @@ package com.yzm.security09.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,6 +45,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 从数据库读取用户、并使用密码编码器解密
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    /**
+     * 注入验证码servlet
+     * servlet可拦截指定url路径，添加自定义操作
+     */
+    @Bean
+    public ServletRegistrationBean<VerifyServlet> initServletRegistrationBean() {
+        return new ServletRegistrationBean<>(new VerifyServlet(),"/auth/getVerifyCode");
     }
 
     @Bean
