@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 异常处理
                 .exceptionHandling()
                 .authenticationEntryPoint(new SecAuthenticationEntryPoint()) // 认证失败
-                //.accessDeniedPage("/401") // 拒接访问跳转页面
+                .accessDeniedPage("/401") // 拒接访问跳转页面
                 .accessDeniedHandler(new SecAccessDeniedHandler()) // 授权失败
                 .and()
 

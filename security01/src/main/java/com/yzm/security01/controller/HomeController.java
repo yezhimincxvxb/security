@@ -28,12 +28,10 @@ public class HomeController {
     @GetMapping(value = {"/user", "/admin"})
     @ResponseBody
     public String info(Authentication authentication, @AuthenticationPrincipal UserDetails userDetails) {
-        HttpResult result = HttpResult.ok(authentication);
         System.out.println("authentication ：");
-        System.out.println(JSONObject.toJSONString(result, true));
-        result.setData(userDetails);
+        System.out.println(JSONObject.toJSONString(authentication, true));
         System.out.println("userDetails ：");
-        System.out.println(JSONObject.toJSONString(result, true));
+        System.out.println(JSONObject.toJSONString(userDetails, true));
         return "请求成功";
     }
 
